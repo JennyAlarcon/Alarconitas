@@ -29,6 +29,18 @@ const notes = [
   "Breathe. You are exactly where you need to be. 🕊️",
   "Your light makes the world brighter. ☀️",
 ];
+const notasES = [
+  "Te estás convirtiendo en todo lo que soñaste. ✨",
+  "Vos podés, hoy y siempre. 💜",
+  "Seguís creciendo, seguís siendo capaz, seguís siendo mágica. 🌙",
+  "Nunca habías estado tan lista. 🌈",
+  "Tu corazón conoce el camino. Confiá en él. 💫",
+  "Los pasitos pequeños también son pasos. Sentite orgullosa. 🌸",
+  "Sos más amada de lo que imaginás. 💕",
+  "Cosas buenas vienen en camino hacia vos. 🍀",
+  "Respirá. Estás justo donde necesitás estar. 🕊️",
+  "Tu luz hace el mundo más brillante. ☀️",
+];
 const noteBtn = document.getElementById("note-btn");
 const noteOut = document.getElementById("note-output");
 let lastNote = -1;
@@ -37,7 +49,7 @@ noteBtn.addEventListener("click", () => {
   do { i = Math.floor(Math.random() * notes.length); } while (i === lastNote);
   lastNote = i;
   noteOut.style.opacity = 0;
-  setTimeout(() => { noteOut.textContent = notes[i]; noteOut.style.opacity = 1; }, 200);
+  setTimeout(() => { noteOut.textContent = (lang === "es" ? notasES : notes)[i]; noteOut.style.opacity = 1; }, 200);
 });
 
 // Visor de imágenes (lightbox)
@@ -65,4 +77,25 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowRight") step(1);
 });
 
-document.getElementById("year").textContent = new Date().getFullYear();
+// Cambiar idioma (español / inglés)
+// Los textos en español están en el HTML, en los atributos data-es (texto) y data-es-alt (descripción de imágenes).
+let lang = "en";
+const langBtn = document.querySelector(".lang-toggle");
+document.querySelectorAll("[data-es]").forEach((el) => { el.dataset.en = el.innerHTML; });
+document.querySelectorAll("[data-es-alt]").forEach((el) => { el.dataset.enAlt = el.alt; });
+const setLang = (l) => {
+  lang = l;
+  const es = l === "es";
+  document.documentElement.lang = l;
+  document.querySelectorAll("[data-es]").forEach((el) => { el.innerHTML = es ? el.dataset.es : el.dataset.en; });
+  document.querySelectorAll("[data-es-alt]").forEach((el) => { el.alt = es ? el.dataset.esAlt : el.dataset.enAlt; });
+  document.title = es ? "Alarconitas ✨ Hecho con amor por Jenn y Alli" : "Alarconitas ✨ Made with love by Jenn & Alli";
+  langBtn.setAttribute("aria-label", es ? "Switch to English" : "Cambiar a español");
+  if (lastNote >= 0) noteOut.textContent = (es ? notasES : notes)[lastNote];
+  document.getElementById("year").textContent = new Date().getFullYear();
+  try { localStorage.setItem("lang", l); } catch {}
+};
+langBtn.addEventListener("click", () => setLang(lang === "es" ? "en" : "es"));
+let saved = null;
+try { saved = localStorage.getItem("lang"); } catch {}
+setLang(saved || (navigator.language.toLowerCase().startsWith("es") ? "es" : "en"));

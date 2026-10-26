@@ -65,6 +65,16 @@ h3 { font-size: 1.3rem; }
 .nav-links .nav-cta { background: var(--purple); color: #fff; }
 .nav-links .nav-cta:hover { background: var(--hot-pink); color: #fff; }
 .nav-toggle { display: none; background: none; border: 0; font-size: 1.8rem; color: var(--purple); cursor: pointer; }
+.nav-links { margin-left: auto; }
+.lang-toggle {
+  order: 3; margin-left: .6rem; display: inline-flex; padding: 3px; gap: 2px;
+  border: 2px solid var(--purple); border-radius: 999px; background: #fff; cursor: pointer;
+  font: 700 .85rem/1 "Fredoka", sans-serif;
+}
+.lang-toggle span { padding: .35rem .6rem; border-radius: 999px; color: var(--purple); transition: background .2s, color .2s; }
+html[lang="en"] .lang-toggle [data-lang="en"],
+html[lang="es"] .lang-toggle [data-lang="es"] { background: linear-gradient(135deg, var(--purple), var(--hot-pink)); color: #fff; }
+.lang-toggle:hover { box-shadow: 0 0 0 4px rgba(236, 72, 153, .2); }
 
 /* ---------- Botones ---------- */
 .btn {
@@ -260,7 +270,8 @@ h3 { font-size: 1.3rem; }
   .manifest-img { order: -1; max-width: 380px; margin: 0 auto; }
 }
 @media (max-width: 760px) {
-  .nav-toggle { display: block; }
+  .nav-toggle { display: block; order: 4; margin-left: .4rem; }
+  .lang-toggle { margin-left: auto; }
   .nav-links {
     position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; padding: 1rem;
     background: var(--cream); box-shadow: var(--shadow); display: none;
